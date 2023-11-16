@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.turing.alan.pokemonotravezconfragmentos"
-        minSdk = 28
+        minSdk = 27
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"

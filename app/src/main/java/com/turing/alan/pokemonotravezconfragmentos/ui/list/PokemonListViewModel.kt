@@ -12,11 +12,14 @@ import kotlinx.coroutines.launch
 
 class PokemonListViewModel(): ViewModel() {
     private val repository = PokemonRepository.getInstance()
-    private val _pokemonUi = MutableLiveData<Pokemon>()
-    val pokemonUi: LiveData<Pokemon>
+    private val _pokemonUi = MutableLiveData<List<Pokemon>>()
+    val pokemonUi: LiveData<List<Pokemon>>
         get() = _pokemonUi
-    private val observer = Observer<PokemonApiModel> {
-        _pokemonUi.value = Pokemon(it.id, it.name)
+    private val observer = Observer<List<PokemonApiModel>> {
+        val pokemonList = it.map {
+            Pokemon(it.id, it.name, it.front)
+        }
+        _pokemonUi.value = pokemonList
     }
 
     init {

@@ -10,16 +10,19 @@ import retrofit2.http.Path
 
 
 interface  PokemonApi {
-    @GET("api/v2/pokemon/{id}/")
-    suspend fun fetchPokemon(@Path("id") id:String):PokemonApiModel
+    @GET("api/v2/pokemon/{name}/")
+    suspend fun fetchPokemon(@Path("name") name:String):PokemonDetailResponse
+    @GET("api/v2/pokemon")
+    suspend fun fetchPokemonList():PokemonListResponse
 }
 
 
 class PokemonRepository private constructor(private val api:PokemonApi) {
 
-    private val _pokemon = MutableLiveData<PokemonApiModel>()
-    val pokemon: LiveData<PokemonApiModel>
+    private val _pokemon = MutableLiveData<List<PokemonApiModel>>()
+    val pokemon: LiveData<List<PokemonApiModel>>
         get() = _pokemon
+
 
     companion object {
         private var _INSTANCE: PokemonRepository? = null
@@ -37,9 +40,23 @@ class PokemonRepository private constructor(private val api:PokemonApi) {
     }
 
     suspend fun fetch() {
-        val pokemonResponse = api.fetchPokemon("1")
+        /*val pokemonResponse = api.fetchPokemon("1")
         Log.d("DAVID",pokemonResponse.toString())
-        _pokemon.value = pokemonResponse
+        _pokemon.value = pokemonResponse*/
+
+        val pokemonListResponse = api.fetchPokemonList()
+        val pokemonListApiModel = pokemonListResponse.results.map {
+            Log.d("BORJA","Pokemon")
+            val detailResponse = api.fetchPokemon(it.name)
+            PokemonApiModel(
+                detailResponse.id,
+                detailResponse.name,
+                detailResponse.weight,
+                detailResponse.height,
+                detailResponse.sprites.frontDefault
+            )
+        }
+        _pokemon.value = pokemonListApiModel
     }
 
 
