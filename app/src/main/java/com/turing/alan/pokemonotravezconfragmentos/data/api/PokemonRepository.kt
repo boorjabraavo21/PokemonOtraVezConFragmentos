@@ -3,6 +3,8 @@ package com.turing.alan.pokemonotravezconfragmentos.data.api
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.turing.alan.pokemonotravezconfrreagmentos.data.api.PokemonDetailResponse
+import com.turing.alan.pokemonotravezconfrreagmentos.data.api.PokemonListResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -11,9 +13,10 @@ import retrofit2.http.Path
 
 interface  PokemonApi {
     @GET("api/v2/pokemon/{name}/")
-    suspend fun fetchPokemon(@Path("name") name:String):PokemonDetailResponse
+    suspend fun fetchPokemon(@Path("name") name:String): PokemonDetailResponse
+
     @GET("api/v2/pokemon")
-    suspend fun fetchPokemonList():PokemonListResponse
+    suspend fun fetchPokemonList(): PokemonListResponse
 }
 
 
@@ -39,11 +42,12 @@ class PokemonRepository private constructor(private val api:PokemonApi) {
         }
     }
 
-    suspend fun fetch() {
-        /*val pokemonResponse = api.fetchPokemon("1")
-        Log.d("DAVID",pokemonResponse.toString())
-        _pokemon.value = pokemonResponse*/
+    suspend fun getPokemon(name:String):PokemonApiModel {
+        val detailResponse = api.fetchPokemon(name)
+        return PokemonApiModel(detailResponse.id, detailResponse.name, detailResponse.weight, detailResponse.height, detailResponse.sprites.frontDefault)
+    }
 
+    suspend fun fetch() {
         val pokemonListResponse = api.fetchPokemonList()
         val pokemonListApiModel = pokemonListResponse.results.map {
             Log.d("BORJA","Pokemon")

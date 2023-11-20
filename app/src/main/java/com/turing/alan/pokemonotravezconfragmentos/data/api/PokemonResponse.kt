@@ -1,4 +1,4 @@
-package com.turing.alan.pokemonotravezconfragmentos.data.api
+package com.turing.alan.pokemonotravezconfrreagmentos.data.api
 
 import com.google.gson.annotations.SerializedName
 

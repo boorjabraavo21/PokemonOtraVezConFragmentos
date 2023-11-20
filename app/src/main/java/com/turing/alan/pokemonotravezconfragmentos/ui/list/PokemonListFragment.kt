@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.turing.alan.pokemonotravezconfragmentos.data.api.PokemonApiModel
 import com.turing.alan.pokemonotravezconfragmentos.data.model.Pokemon
 import com.turing.alan.pokemonotravezconfragmentos.databinding.FragmentPokemonListBinding
@@ -37,12 +38,17 @@ class PokemonListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = binding.pokemonList
-        val adapter = PokemonAdapter()
+        val adapter = PokemonAdapter(::onShowDetail)
 
         val observer = Observer<List<Pokemon>> {
             adapter.submitList(it)
         }
         viewModel.pokemonUi.observe(viewLifecycleOwner,observer)
         recyclerView.adapter = adapter
+    }
+
+    fun onShowDetail(pokemon:Pokemon) {
+        val action = PokemonListFragmentDirections.actionPokemonListFragmentToPokemonDetailFragment(pokemon.name)
+        findNavController().navigate(action)
     }
 }
