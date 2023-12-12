@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.turing.alan.pokemonotravezconfragmentos.data.api.PokemonApiModel
 import com.turing.alan.pokemonotravezconfragmentos.data.model.Pokemon
 import com.turing.alan.pokemonotravezconfragmentos.databinding.FragmentPokemonListBinding
 import com.turing.alan.pokemonotravezconfragmentos.ui.adapter.PokemonAdapter
@@ -19,7 +16,6 @@ import com.turing.alan.pokemonotravezconfragmentos.ui.adapter.PokemonAdapter
 
 class PokemonListFragment : Fragment() {
     private val viewModel:PokemonListViewModel by viewModels()
-    //private val viewModel:PokemonListViewModel by activityViewModels()
     private lateinit var binding: FragmentPokemonListBinding
 
     override fun onCreateView(
